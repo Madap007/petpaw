@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
+import NavPets from '../components/Navpets'
 
 const filters = {
   breed: ['Any', 'Labrador', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Poodle'],
@@ -117,12 +118,13 @@ function Petlist() {
   return (
     <div>
     <Navbar />
+    <NavPets />
     <div className="max-w-7xl mx-auto px-4 py-8">
       <div className="flex gap-8">
         {/* Filters Sidebar */}
         <div className="w-64 flex-shrink-0 space-y-6">
           {Object.entries(filters).map(([filterName, options]) => (
-            <div key={filterName} className="border-b pb-4">
+            <div key={filterName} className="pb-4">
               <h3 className="text-lg font-semibold mb-2 uppercase">
                 {filterName.replace(/([A-Z])/g, ' $1').trim()}
               </h3>
