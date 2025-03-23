@@ -2,7 +2,8 @@ import './App.css'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Petlist from './pages/Petlist'
-import AdoptionForm from './components/Adoptionform'
+import Adoptionform from './components/Adoptionform'
+import PetDetails from './components/PetDetails'
 
 
 function App() {
@@ -13,7 +14,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/pets" element={<Petlist />} />
-        <Route path="/adoption-form" element={<AdoptionForm />} />
+        <Route path="/adoption-form" element={<Adoptionform />} />
+        <Route path='/petdetails' element={<PetDetails/>} />
       </Routes>
     </Router>
   )

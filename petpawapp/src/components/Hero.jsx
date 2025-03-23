@@ -1,14 +1,10 @@
-import { useState } from "react";
-import Adoptionform from "./Adoptionform";
+// import { useState } from "react";
+// import Adoptionform from "./Adoptionform";
+import { useNavigate } from "react-router-dom"
 
 function Hero() {
-  const [showAdoptionForm, setShowAdoptionForm] = useState(false);
-
-  const handleAdoptionForm = () => {
-    setShowAdoptionForm(true);
   
-  };
-
+  const navigate = useNavigate();
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="flex items-center justify-between">
@@ -23,10 +19,10 @@ function Hero() {
           </p>
           <div className="space-x-4">
             
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transform hover:scale-105 transition-all duration-300" onClick={handleAdoptionForm}>
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transform hover:scale-105 transition-all duration-300" onClick={() => navigate('/adoption-form')}>
               Get Started 
             </button>
-            {showAdoptionForm && <Adoptionform /> }
+            
           
             <button className="border-2 border-gray-300 px-6 py-3 rounded-lg font-medium hover:border-blue-600 hover:text-blue-600 transition-all duration-300">
               Learn More

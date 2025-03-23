@@ -1,7 +1,9 @@
 import logo from '../assets/images/turtle.png'
+import { useNavigate } from 'react-router-dom';
 
 
 function Navbar() {
+  const navigate = useNavigate();
     return (
       <nav className="bg-transparent backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4">
@@ -20,8 +22,8 @@ function Navbar() {
               <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 Home
               </a>
-              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                About
+              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors" onClick={() => navigate('/pets')}>
+                Find Pets  
               </a>
               <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
                 Services

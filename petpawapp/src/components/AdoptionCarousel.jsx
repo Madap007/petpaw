@@ -51,8 +51,8 @@ const pets = [
 ];
 
 function AdoptionCarousel() {
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const settings = {
     dots: true,
     infinite: true,
@@ -110,8 +110,8 @@ function AdoptionCarousel() {
                   <p className="text-gray-600">{pet.breed}</p>
                   <p className="text-gray-500 text-sm">{pet.age}</p>
                   <button 
-                    className="mt-3 w-full bg-rose-200 text-black py-2 px-4 rounded-md hover:bg-rose-300 transition-colors duration-300"
-                    onClick={() => navigate('/pets')}
+                    className="mt-3 w-full bg-rose-200 text-black py-2 px-4 rounded-md hover:bg-rose-300 transition-colors duration-300" onClick={() => navigate('/petdetails')}
+                   
                   >
                     Meet {pet.name}
                   </button>
