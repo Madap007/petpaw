@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import NavPets from '../components/Navpets'
 
@@ -11,7 +11,8 @@ const filters = {
   coatLength: ['Any', 'Short', 'Medium', 'Long']
 };
 
-const samplePets = [
+
+const allpets = [
   {
     id: 1,
     name: "Duke",
@@ -19,7 +20,11 @@ const samplePets = [
     breed: "Border Collie Mix",
     age: "Adult",
     distance: "1 mile away",
-    status: "OUT-OF-TOWN PET"
+    status: "OUT-OF-TOWN PET",
+    size: "Medium",
+    gender: "Male",
+    goodWith: ["Kids", "Dogs"],
+    coatLength: "Medium"
   },
   {
     id: 2,
@@ -28,7 +33,11 @@ const samplePets = [
     breed: "Golden Retriever",
     age: "Puppy",
     distance: "2.5 miles away",
-    status: "LOCAL PET"
+    status: "LOCAL PET",
+    size: "Large",
+    gender: "Female",
+    goodWith: ["Kids", "Dogs", "Cats"],
+    coatLength: "Long"
   },
   {
     id: 3,
@@ -37,7 +46,11 @@ const samplePets = [
     breed: "German Shepherd",
     age: "Young",
     distance: "3 miles away",
-    status: "OUT-OF-TOWN PET"
+    status: "OUT-OF-TOWN PET",
+    size: "Large",
+    gender: "Male",
+    goodWith: ["Dogs"],
+    coatLength: "Medium"
   },
   {
     id: 4,
@@ -46,7 +59,11 @@ const samplePets = [
     breed: "Labrador Retriever",
     age: "Adult",
     distance: "0.5 miles away",
-    status: "LOCAL PET"
+    status: "LOCAL PET",
+    size: "Large",
+    gender: "Female",
+    goodWith: ["Kids", "Dogs"],
+    coatLength: "Short"
   },
   {
     id: 5,
@@ -55,7 +72,11 @@ const samplePets = [
     breed: "French Bulldog",
     age: "Senior",
     distance: "4 miles away",
-    status: "URGENT ADOPTION"
+    status: "URGENT ADOPTION",
+    size: "Small",
+    gender: "Male",
+    goodWith: ["Kids"],
+    coatLength: "Short"
   },
   {
     id: 6,
@@ -64,7 +85,11 @@ const samplePets = [
     breed: "Husky Mix",
     age: "Young",
     distance: "2 miles away",
-    status: "LOCAL PET"
+    status: "LOCAL PET",
+    size: "Medium",
+    gender: "Female",
+    goodWith: ["Dogs"],
+    coatLength: "Medium"
   },
   {
     id: 7,
@@ -73,7 +98,11 @@ const samplePets = [
     breed: "Pitbull Mix",
     age: "Adult",
     distance: "1.5 miles away",
-    status: "OUT-OF-TOWN PET"
+    status: "OUT-OF-TOWN PET",
+    size: "Large",
+    gender: "Male",
+    goodWith: ["Kids", "Dogs"],
+    coatLength: "Short"
   },
   {
     id: 8,
@@ -82,7 +111,11 @@ const samplePets = [
     breed: "Poodle",
     age: "Adult",
     distance: "3.5 miles away",
-    status: "LOCAL PET"
+    status: "LOCAL PET",
+    size: "Medium",
+    gender: "Female",
+    goodWith: ["Kids", "Dogs", "Cats"],
+    coatLength: "Long"
   },
   {
     id: 9,
@@ -91,7 +124,11 @@ const samplePets = [
     breed: "Australian Shepherd",
     age: "Puppy",
     distance: "5 miles away",
-    status: "URGENT ADOPTION"
+    status: "URGENT ADOPTION",
+    size: "Medium",
+    gender: "Male",
+    goodWith: ["Dogs"],
+    coatLength: "Medium"
   },
   {
     id: 10,
@@ -100,7 +137,11 @@ const samplePets = [
     breed: "Beagle Mix",
     age: "Senior",
     distance: "2.8 miles away",
-    status: "LOCAL PET"
+    status: "LOCAL PET",
+    size: "Small",
+    gender: "Female",
+    goodWith: ["Kids", "Cats"],
+    coatLength: "Short"
   }
   // Add more sample pets here
 ];
@@ -114,7 +155,51 @@ function Petlist() {
     goodWith: 'Any',
     coatLength: 'Any'
   });
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPets, setFilteredPets] = useState(allpets);
 
+  // Filter and search logic
+  useEffect(() => {
+    let result = [...allpets];
+
+    // Apply search
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(pet => 
+        pet.name.toLowerCase().includes(query) ||
+        pet.breed.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply filters
+    result = result.filter(pet => {
+      return Object.entries(selectedFilters).every(([key, value]) => {
+        if (value === 'Any') return true;
+        
+        // Special handling for goodWith array
+        if (key === 'goodWith') {
+          return value === 'Any' || pet.goodWith.includes(value);
+        }
+        
+        return pet[key.toLowerCase()] === value;
+      });
+    });
+
+    setFilteredPets(result);
+  }, [searchQuery, selectedFilters]);
+
+  // Handle filter changes
+  const handleFilterChange = (filterName, value) => {
+    setSelectedFilters(prev => ({
+      ...prev,
+      [filterName]: value
+    }));
+  };
+
+  // Handle search input
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
   return (
     <div>
     <Navbar />
@@ -124,17 +209,14 @@ function Petlist() {
         {/* Filters Sidebar */}
         <div className="w-64 flex-shrink-0 space-y-6">
           {Object.entries(filters).map(([filterName, options]) => (
-            <div key={filterName} className="pb-4">
+            <div key={filterName} className="border-b pb-4">
               <h3 className="text-lg font-semibold mb-2 uppercase">
                 {filterName.replace(/([A-Z])/g, ' $1').trim()}
               </h3>
               <select
-                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
                 value={selectedFilters[filterName]}
-                onChange={(e) => setSelectedFilters({
-                  ...selectedFilters,
-                  [filterName]: e.target.value
-                })}
+                onChange={(e) => handleFilterChange(filterName, e.target.value)}
               >
                 {options.map(option => (
                   <option key={option} value={option}>
@@ -146,31 +228,38 @@ function Petlist() {
           ))}
         </div>
 
-        {/* Pet Cards Grid */}
+        {/* Main Content */}
         <div className="flex-1">
-          <div className="grid grid-cols-4 gap-6">
-            {samplePets.map(pet => (
-              <div key={pet.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                {/* Card Image */}
+          {/* Search Bar */}
+          <div className="mb-6">
+            <input
+              type="text"
+              placeholder="Search pets by name or breed..."
+              value={searchQuery}
+              onChange={handleSearch}
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
+            />
+          </div>
+            {/* Pet Cards Grid */}
+            <div className="grid grid-cols-4 gap-6">
+            {filteredPets.map(pet => (
+              <div 
+                key={pet.id} 
+                className="bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer transform hover:scale-105 transition-all duration-300"
+                onClick={() => navigate(`/pets/${pet.id}`)}
+              >
                 <div className="relative">
                   <img
                     src={pet.image}
                     alt={pet.name}
                     className="w-full h-48 object-cover"
                   />
-                  <button className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors">
-                    <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
-                  </button>
                   {pet.status && (
                     <span className="absolute top-2 left-2 bg-gray-900/80 text-white text-xs px-2 py-1 rounded">
                       {pet.status}
                     </span>
                   )}
                 </div>
-
-                {/* Card Content */}
                 <div className="p-4">
                   <div className="flex justify-between items-start mb-2">
                     <h3 className="text-xl font-bold text-gray-900">{pet.name}</h3>
@@ -182,6 +271,15 @@ function Petlist() {
               </div>
             ))}
           </div>
+
+          {/* No Results Message */}
+          {filteredPets.length === 0 && (
+            <div className="text-center py-8">
+              <p className="text-gray-500 text-lg">
+                No pets found matching your criteria. Try adjusting your filters or search term.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

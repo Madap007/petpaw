@@ -19,16 +19,16 @@ function Navbar() {
   
             {/* Navigation Buttons */}
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
+              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors" onClick={() => navigate('/')}>
                 Home
               </a>
               <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors" onClick={() => navigate('/pets')}>
                 Find Pets  
               </a>
-              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                Services
+              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors" onClick={() => navigate('/aboutus')}>
+                About Us
               </a>
-              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors">
+              <a href="#" className="text-gray-800 hover:text-black px-3 py-2 rounded-md text-sm font-medium transition-colors" >
                 Contact
               </a>
             </div>
